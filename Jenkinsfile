@@ -93,7 +93,6 @@
 //         }
 //     }
 // }
-
 pipeline {
     agent any
 
@@ -102,7 +101,7 @@ pipeline {
             steps {
                 dir('todo-jenkins/backend') {
                     sh '''
-                        podman run --rm \
+                        docker run --rm \
                           -v "$PWD:/app" \
                           -w /app \
                           node:22-alpine \
@@ -116,7 +115,7 @@ pipeline {
             steps {
                 dir('todo-jenkins/frontend') {
                     sh '''
-                        podman run --rm \
+                        docker run --rm \
                           -v "$PWD:/app" \
                           -w /app \
                           node:22-alpine \
@@ -130,8 +129,8 @@ pipeline {
             steps {
                 dir('todo-jenkins') {
                     sh '''
-                        podman build -t todo-backend:latest ./backend
-                        podman build -t todo-frontend:latest ./frontend
+                        docker build -t todo-backend:latest ./backend
+                        docker build -t todo-frontend:latest ./frontend
                     '''
                 }
             }
