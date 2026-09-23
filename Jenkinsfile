@@ -102,8 +102,8 @@ pipeline {
                 dir('todo-jenkins/backend') {
                     sh '''
                         docker run --rm \
-                          -v "$PWD:/app" \
-                          -w /app \
+                          --volumes-from $(hostname) \
+                          -w "$PWD" \
                           node:22-alpine \
                           sh -c "npm ci && npm test"
                     '''
@@ -116,8 +116,8 @@ pipeline {
                 dir('todo-jenkins/frontend') {
                     sh '''
                         docker run --rm \
-                          -v "$PWD:/app" \
-                          -w /app \
+                          --volumes-from $(hostname) \
+                          -w "$PWD" \
                           node:22-alpine \
                           sh -c "npm ci && npm run build"
                     '''
