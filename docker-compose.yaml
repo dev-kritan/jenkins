@@ -17,18 +17,55 @@
 #     ports:
 #       - "8080:8080"
 
+# services:
+#   backend:
+#     build:
+#       context: ./todo-jenkins/backend
+#     ports:
+#       - "5000:5000"
+
+#   frontend:
+#     build:
+#       context: ./todo-jenkins/frontend
+#     ports:
+#       - "3000:80"
+
+#   jenkins:
+#     container_name: my-jenkins-podman
+#     build:
+#       context: ./todo-jenkins/jenkins
+#     image: my-jenkins-podman
+#     restart: unless-stopped
+#     ports:
+#       - "8080:8080"
+#       - "50000:50000"
+#     environment:
+#       - CONTAINER_HOST=unix:///var/run/podman/podman.sock
+#     volumes:
+#       - jenkins_home:/var/jenkins_home
+#       - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/podman/podman.sock
+
+# volumes:
+#   jenkins_home:
+
 services:
   backend:
     build:
       context: ./todo-jenkins/backend
     ports:
       - "5000:5000"
+    depends_on:
+      jenkins:
+        condition: service_healthy
 
   frontend:
     build:
       context: ./todo-jenkins/frontend
     ports:
       - "3000:80"
+    depends_on:
+      jenkins:
+        condition: service_healthy
 
   jenkins:
     container_name: my-jenkins-podman
@@ -44,6 +81,16 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/podman/podman.sock
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -f http://localhost:8080/login > /dev/null || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 40s
 
 volumes:
   jenkins_home:
