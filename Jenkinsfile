@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm \
-                      -v "$PWD/backend:/app" \
+                      -v "$PWD/todo-jenkins/backend:/app" \
                       -w /app \
                       node:22-alpine \
                       sh -c "npm ci && npm test"
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm \
-                      -v "$PWD/frontend:/app" \
+                      -v "$PWD/todo-jenkins/frontend:/app" \
                       -w /app \
                       node:22-alpine \
                       sh -c "npm ci && npm run build"
