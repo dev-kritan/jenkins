@@ -69,6 +69,7 @@ services:
 
   jenkins:
     container_name: my-jenkins-podman
+    user: root
     build:
       context: ./todo-jenkins/jenkins
     image: my-jenkins-podman
