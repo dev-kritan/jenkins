@@ -105,7 +105,7 @@ pipeline {
                           --volumes-from $(hostname) \
                           -w "$PWD" \
                           node:22-alpine \
-                          sh -c "npm ci && npm test -- --passWithNoTests"
+                          sh -c "npm ci && npm test"
                     '''
                 }
             }
