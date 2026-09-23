@@ -10,3 +10,9 @@ services:
       context: ./todo-jenkins/frontend
     ports:
       - "3000:80"
+
+  jenkins:
+    build:
+      context: ./todo-jenkins/jenkins
+    ports:
+      - "8080:8080"
